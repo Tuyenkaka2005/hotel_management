@@ -1,0 +1,56 @@
+.room-detail-bg {
+    background: #f4f6fb;
+    min-height: 100vh;
+    padding: 0;
+}
+.room-detail-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 32px 32px 24px 32px;
+}
+.room-detail-title {
+    font-size: 2.1rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: #222;
+}
+.room-detail-info {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #444;
+}
+.room-detail-imgs {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+.room-detail-imgs img {
+    width: 220px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1.5px solid #eee;
+    background: #fafbfc;
+    transition: transform 0.2s;
+}
+.room-detail-imgs img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+.room-detail-actions {
+    margin-top: 24px;
+}
+.room-detail-actions .btn {
+    min-width: 140px;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+@media (max-width: 600px) {
+    .room-detail-container { padding: 16px 4px; }
+    .room-detail-imgs img { width: 100%; height: 120px; }
+} 

@@ -1,0 +1,108 @@
+/* --- CSS cho trang chi tiết phòng --- */
+
+.detail-container {
+    max-width: 960px;
+    margin: 0 auto 40px auto; /* Căn giữa và thêm khoảng cách dưới */
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+.detail-container h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.address {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.detail-images {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-images img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.grid-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.description {
+    margin-top: 30px;
+}
+
+.description h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.description h3 {
+    margin-top: 24px;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+.description p {
+    line-height: 1.7;
+    margin-bottom: 14px;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.description ul {
+    padding-left: 20px;
+    margin: 15px 0;
+    column-count: 2; /* Hiển thị tiện ích thành 2 cột */
+}
+
+.description li {
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.btn.book-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white !important; /* Ghi đè màu chữ của template */
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none !important; /* Ghi đè gạch chân */
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn.book-btn:hover {
+    background-color: #0056b3;
+    color: white !important;
+}
+
+@media (max-width: 768px) {
+    .detail-container {
+        padding: 20px;
+    }
+    .grid-images {
+        grid-template-columns: 1fr;
+    }
+    .description ul {
+        column-count: 1; /* Hiển thị 1 cột trên điện thoại */
+    }
+}

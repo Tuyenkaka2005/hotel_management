@@ -1,0 +1,435 @@
+
+
+/*--------------------------------------------------------------------- File Name: responsive.css ---------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------- 991px x 768px ---------------------------------------------------------------------*/
+
+@media (min-width: 1200px) and (max-width: 1342px) {}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .book_room h1 {
+        font-size: 28px;
+    }
+    .carousel-indicators {
+        bottom: 17px;
+    }
+    .about_img {
+        margin-right: 0px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .header {
+        padding: 10px 0;
+    }
+    
+    .navigation.navbar-light .navbar-nav .nav-link {
+        margin: 0 5px;
+        padding: 8px 12px;
+    }
+    
+    .carousel-item img {
+        min-height: 570px;
+    }
+    .book_room h1 {
+        font-size: 19px;
+    }
+    .carousel-indicators {
+        bottom: 27px;
+    }
+    .about_img {
+        margin-right: 0px;
+    }
+    .book_btn {
+        padding: 5px 0;
+    }
+    
+    /* Header responsive adjustments */
+    .header .logo img {
+        max-height: 35px;
+    }
+    
+    .search-section .btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .profile-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .profile-avatar {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .header {
+        height: auto;
+        padding: 8px 0;
+    }
+    
+    .header .logo img {
+        max-height: 30px;
+    }
+    
+    .carousel-item img {
+        min-height: 570px;
+    }
+    .carousel-indicators {
+        bottom: 27px;
+    }
+    .about .titlepage {
+        max-width: inherit;
+    }
+    .about_img {
+        margin-right: 0px;
+        margin-top: 30px;
+    }
+    .main_form .send_btn {
+        margin-bottom: 30px;
+    }
+    ul.link_menu {
+        margin-bottom: 20px;
+    }
+    
+    /* Navigation mobile styles */
+    .navigation.navbar {
+        float: right;
+        display: inherit !important;
+        padding: 0;
+        width: 100%;
+        padding-top: 5px !important;
+    }
+    .navigation .navbar-collapse {
+        background: #fff;
+        padding: 20px;
+        margin-top: 56px;
+        position: absolute;
+        width: 100%;
+        margin-right: 20px;
+        z-index: 999;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .navigation.navbar-light .navbar-nav .nav-link {
+        padding: 10px 0;
+        color: #333 !important;
+        border-bottom: 1px solid #f0f0f0;
+        margin: 0;
+    }
+    .navigation.navbar-light .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+    .navigation.navbar-light .navbar-toggler {
+        border: inherit;
+        float: right;
+        padding-top: 9px;
+    }
+    .navigation.navbar-light .navbar-toggler-icon {
+        background: url(../images/menu_icon.png);
+        background-repeat: no-repeat;
+    }
+    .d_none {
+        display: none;
+    }
+    
+    /* Search and profile mobile */
+    .search-section .btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    .profile-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+    
+    .profile-avatar {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .auth-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .auth-buttons .btn {
+        margin: 0 !important;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 991px) {
+    .header {
+        padding: 10px 0;
+        height: 70px; /* Reduced height for tablets */
+    }
+    
+    .header .logo img {
+        max-height: 35px;
+    }
+    
+    .navigation.navbar-light .navbar-nav .nav-link {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .search-section .btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .profile-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .profile-avatar {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .auth-buttons .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    /* Adjust body padding for smaller header */
+    body {
+        padding-top: 90px;
+    }
+    
+    .banner_main {
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .header {
+        padding: 8px 0;
+        height: 60px; /* Reduced height for mobile */
+    }
+    
+    .header .logo img {
+        max-height: 30px;
+    }
+    
+    .navigation.navbar-light .navbar-nav .nav-link {
+        padding: 10px 0;
+        border-bottom: 1px solid #ecf0f1;
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .navigation.navbar-light .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    .search-section .btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .profile-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+    
+    .profile-avatar {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .auth-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .auth-buttons .btn {
+        margin: 0 !important;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    /* Adjust body padding for mobile header */
+    body {
+        padding-top: 80px;
+    }
+    
+    .banner_main {
+        margin-top: 10px;
+    }
+    
+    #searchModal .modal-dialog {
+        margin: 10px;
+    }
+    
+    #searchModal .modal-body {
+        padding: 15px;
+    }
+    
+    #searchModal .form-control {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    #searchModal .btn-primary {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 575px) {
+    .header {
+        padding: 6px 0;
+        height: 55px; /* Minimal height for small mobile */
+    }
+    
+    .header .logo img {
+        max-height: 25px;
+    }
+    
+    .search-section .btn {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .profile-btn {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+    
+    .profile-avatar {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .auth-buttons .btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    /* Adjust body padding for small mobile header */
+    body {
+        padding-top: 75px;
+    }
+    
+    .banner_main {
+        margin-top: 8px;
+    }
+    
+    .carousel-item img {
+        min-height: 350px;
+    }
+    
+    .book_room h1 {
+        font-size: 14px;
+    }
+    
+    .book_now .online_book {
+        padding: 15px 8px;
+    }
+    
+    .book_btn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .about .titlepage {
+        max-width: inherit;
+    }
+    
+    .about_img {
+        margin-right: 0px;
+        margin-top: 15px;
+    }
+    
+    .main_form .send_btn {
+        margin-bottom: 15px;
+    }
+    
+    ul.link_menu {
+        margin-bottom: 10px;
+    }
+    
+    /* Navigation mobile styles */
+    .navigation.navbar {
+        float: right;
+        display: inherit !important;
+        padding: 0;
+        width: 100%;
+        padding-top: 3px !important;
+    }
+    
+    .navigation .navbar-collapse {
+        background: #fff;
+        padding: 10px;
+        margin-top: 40px;
+        position: absolute;
+        width: 100%;
+        margin-right: 10px;
+        z-index: 999;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .navigation.navbar-light .navbar-nav .nav-link {
+        padding: 6px 0;
+        color: #333 !important;
+        border-bottom: 1px solid #f0f0f0;
+        margin: 0;
+        font-size: 13px;
+    }
+    
+    .navigation.navbar-light .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    .navigation.navbar-light .navbar-toggler {
+        border: inherit;
+        float: right;
+        padding-top: 3px;
+    }
+    
+    .testimonial_box {
+        margin-bottom: 15px;
+    }
+    
+    .navigation.navbar-light .navbar-toggler-icon {
+        background: url(../images/menu_icon.png);
+        background-repeat: no-repeat;
+        background-size: 18px;
+    }
+    
+    .d_none {
+        display: none;
+    }
+    
+    /* Modal adjustments for small mobile */
+    #searchModal .modal-dialog {
+        margin: 5px;
+    }
+    
+    #searchModal .modal-body {
+        padding: 12px;
+    }
+    
+    #searchModal .form-control {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    #searchModal .btn-primary {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+}

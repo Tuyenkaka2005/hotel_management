@@ -1,0 +1,628 @@
+/*--------------------------------------------------------------------- Header Styles - Modern Design ---------------------------------------------------------------------*/
+
+/* Header sát trái */
+.header {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    background: #fff;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 0;
+}
+
+.header .container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 0 !important;
+    padding-right: 24px;
+    margin-left: 0 !important;
+    width: 100%;
+}
+
+.header .row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    flex-wrap: nowrap;
+}
+
+.header .logo_section {
+    margin-left: 0 !important;
+    padding-left: 16px !important;
+    min-width: 100px;
+    max-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.header .logo {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+.header .logo img {
+    max-width: 100px;
+    height: auto;
+    margin-left: 0 !important;
+}
+
+.header .logo:hover img {
+     transform: scale(1.05);
+}
+
+/* Navigation Styles */
+.navigation.navbar {
+     padding: 0;
+     height: 100%;
+     display: flex;
+     align-items: center;
+}
+
+.header .navigation {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation .navbar-collapse {
+    width: 100%;
+    display: flex !important;
+    justify-content: center;
+}
+
+.navigation .navbar-nav {
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+.navigation.navbar-light .navbar-nav {
+     gap: 5px;
+     height: 100%;
+     display: flex;
+     align-items: center;
+}
+
+.navigation.navbar-light .navbar-nav .nav-link {
+     color: #2c3e50 !important;
+     font-weight: 500;
+     padding: 12px 18px;
+     border-radius: 8px;
+     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+     position: relative;
+     font-size: 15px;
+     letter-spacing: 0.3px;
+     white-space: nowrap;
+     display: flex;
+     align-items: center;
+     height: 100%;
+}
+
+.navigation.navbar-light .navbar-nav .nav-link:hover,
+.navigation.navbar-light .navbar-nav .nav-link:focus {
+     color: #e74c3c !important;
+     background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.05));
+     transform: translateY(-2px);
+     box-shadow: 0 4px 12px rgba(231, 76, 60, 0.15);
+}
+
+.navigation.navbar-light .navbar-nav .active > .nav-link {
+     color: #e74c3c !important;
+     background: linear-gradient(135deg, rgba(231, 76, 60, 0.15), rgba(231, 76, 60, 0.08));
+     font-weight: 600;
+}
+
+.navigation.navbar-light .navbar-nav .active > .nav-link::after {
+     content: '';
+     position: absolute;
+     bottom: 0;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 40px;
+     height: 3px;
+     background: linear-gradient(90deg, #e74c3c, #c0392b);
+     border-radius: 2px;
+     animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+     from {
+         width: 0;
+         opacity: 0;
+     }
+     to {
+         width: 40px;
+         opacity: 1;
+     }
+}
+
+/* Search Button Styles */
+.search-section .btn {
+     border-radius: 50%;
+     width: 42px;
+     height: 42px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+     border: 2px solid #ecf0f1;
+     background: white;
+     color: #7f8c8d;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.search-section .btn:hover {
+     background: linear-gradient(135deg, #e74c3c, #c0392b);
+     border-color: #e74c3c;
+     color: white;
+     transform: scale(1.1) rotate(5deg);
+     box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+}
+
+/* Profile Dropdown Styles */
+.profile-dropdown {
+     position: relative;
+     display: inline-block;
+}
+
+.profile-btn {
+     background: white;
+     border: 2px solid #ecf0f1;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     font-size: 14px;
+     color: #2c3e50;
+     padding: 10px 16px;
+     border-radius: 25px;
+     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+     font-weight: 500;
+}
+
+.profile-btn:hover {
+     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+     border-color: #e74c3c;
+     transform: translateY(-2px);
+     box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.profile-avatar {
+     width: 36px;
+     height: 36px;
+     border-radius: 50%;
+     object-fit: cover;
+     border: 2px solid #ecf0f1;
+     transition: all 0.3s ease;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.profile-btn:hover .profile-avatar {
+     border-color: #e74c3c;
+     transform: scale(1.1);
+}
+
+.profile-menu {
+     display: none;
+     position: absolute;
+     right: 0;
+     top: 130%;
+     background: white;
+     min-width: 220px;
+     box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+     border-radius: 15px;
+     z-index: 1000;
+     border: 1px solid #ecf0f1;
+     overflow: hidden;
+     animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-dropdown.open .profile-menu {
+     display: block;
+}
+
+@keyframes slideDown {
+     from {
+         opacity: 0;
+         transform: translateY(-10px) scale(0.95);
+     }
+     to {
+         opacity: 1;
+         transform: translateY(0) scale(1);
+     }
+}
+
+.profile-menu .dropdown-item {
+     display: flex;
+     align-items: center;
+     padding: 14px 20px;
+     color: #2c3e50;
+     text-decoration: none;
+     background: none;
+     border: none;
+     text-align: left;
+     font-size: 14px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     font-weight: 500;
+}
+
+.profile-menu .dropdown-item:hover {
+     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+     color: #e74c3c;
+     transform: translateX(5px);
+}
+
+.profile-menu .dropdown-item i {
+     width: 20px;
+     text-align: center;
+     margin-right: 12px;
+     color: #7f8c8d;
+}
+
+.profile-menu .dropdown-item:hover i {
+     color: #e74c3c;
+}
+
+.profile-menu .dropdown-divider {
+     margin: 0;
+     border-color: #ecf0f1;
+     height: 1px;
+}
+
+/* Auth Buttons Styles */
+.auth-buttons .btn {
+     border-radius: 25px;
+     padding: 10px 20px;
+     font-weight: 600;
+     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+     font-size: 14px;
+     letter-spacing: 0.3px;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.auth-buttons .btn-outline-primary {
+     border: 2px solid #e74c3c;
+     color: #e74c3c;
+     background: white;
+}
+
+.auth-buttons .btn-outline-primary:hover {
+     background: linear-gradient(135deg, #e74c3c, #c0392b);
+     border-color: #e74c3c;
+     color: white;
+     transform: translateY(-2px);
+     box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+}
+
+.auth-buttons .btn-primary {
+     background: linear-gradient(135deg, #e74c3c, #c0392b);
+     border: 2px solid #e74c3c;
+     color: white;
+}
+
+.auth-buttons .btn-primary:hover {
+     background: linear-gradient(135deg, #c0392b, #a93226);
+     border-color: #c0392b;
+     transform: translateY(-2px);
+     box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Search Modal Styles */
+#searchModal .modal-content {
+     border-radius: 20px;
+     border: none;
+     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+     overflow: hidden;
+}
+
+#searchModal .modal-header {
+     background: linear-gradient(135deg, #e74c3c, #c0392b);
+     color: white;
+     border-radius: 20px 20px 0 0;
+     border-bottom: none;
+     padding: 25px 30px;
+}
+
+#searchModal .modal-title {
+     font-weight: 700;
+     font-size: 20px;
+     letter-spacing: 0.5px;
+}
+
+#searchModal .close {
+     color: white;
+     opacity: 0.8;
+     font-size: 24px;
+     transition: all 0.3s ease;
+}
+
+#searchModal .close:hover {
+     opacity: 1;
+     transform: rotate(90deg);
+}
+
+#searchModal .modal-body {
+     padding: 30px;
+}
+
+#searchModal .form-group {
+     margin-bottom: 20px;
+}
+
+#searchModal .form-control {
+     border-radius: 12px;
+     border: 2px solid #ecf0f1;
+     padding: 15px 20px;
+     transition: all 0.3s ease;
+     font-size: 15px;
+     background: #f8f9fa;
+     /* Đảm bảo dropdown hiển thị */
+     position: relative;
+     z-index: 1;
+}
+
+#searchModal .form-control:focus {
+     border-color: #e74c3c;
+     box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.15);
+     background: white;
+     transform: translateY(-2px);
+     /* Đảm bảo dropdown hiển thị khi focus */
+     z-index: 10;
+}
+
+/* Đảm bảo select dropdown hiển thị đúng */
+#searchModal select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none !important;
+    color: #333 !important;
+    background-color: #fff !important;
+    text-indent: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    padding-right: 40px;
+    cursor: pointer;
+    border: 2px solid #e74c3c;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(231,76,60,0.08);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#searchModal select.form-control:focus {
+    border-color: #c0392b !important;
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.15) !important;
+    outline: none;
+}
+
+#searchModal select.form-control option {
+    color: #333 !important;
+    background-color: #fff !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+}
+
+#searchModal select.form-control option:hover,
+#searchModal select.form-control option:focus,
+#searchModal select.form-control option:selected {
+    background-color: #e74c3c !important;
+    color: #fff !important;
+}
+
+/* Vô hiệu hóa nice-select cho modal search */
+#searchModal select.form-control {
+     display: block !important;
+     opacity: 1 !important;
+     visibility: visible !important;
+     position: relative !important;
+     z-index: 1 !important;
+}
+
+/* Ẩn nice-select wrapper nếu có */
+#searchModal .nice-select {
+     display: none !important;
+}
+
+/* Đảm bảo select hiển thị đúng trong modal */
+#searchModal .form-group select {
+     width: 100% !important;
+     height: auto !important;
+     min-height: 38px !important;
+     padding: 8px 12px !important;
+     border: 1px solid #ddd !important;
+     border-radius: 4px !important;
+     background-color: #fff !important;
+     color: #333 !important;
+     font-size: 14px !important;
+     line-height: 1.5 !important;
+     cursor: pointer !important;
+     outline: none !important;
+     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+#searchModal .form-group select:focus {
+     border-color: #e74c3c !important;
+     box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25) !important;
+}
+
+/* Đảm bảo modal không bị overflow hidden */
+#searchModal .modal-content {
+     overflow: visible;
+}
+
+#searchModal .modal-body {
+     overflow: visible;
+}
+
+/* Đảm bảo form-group không bị overflow */
+#searchModal .form-group {
+     margin-bottom: 20px;
+     position: relative;
+     overflow: visible;
+}
+
+#searchModal .btn-primary {
+     background: linear-gradient(135deg, #e74c3c, #c0392b);
+     border: none;
+     border-radius: 25px;
+     padding: 15px 40px;
+     font-weight: 700;
+     font-size: 16px;
+     letter-spacing: 0.5px;
+     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+     box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+#searchModal .btn-primary:hover {
+     transform: translateY(-3px);
+     box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+     background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+     .header {
+          padding: 12px 0;
+     }
+     
+     .header .logo img {
+          max-height: 40px;
+     }
+     
+     .navigation.navbar-light .navbar-nav .nav-link {
+          padding: 10px 15px;
+          font-size: 14px;
+     }
+     
+     .search-section .btn {
+          width: 38px;
+          height: 38px;
+     }
+     
+     .profile-btn {
+          padding: 8px 14px;
+          font-size: 13px;
+     }
+     
+     .profile-avatar {
+          width: 32px;
+          height: 32px;
+     }
+     
+     .auth-buttons .btn {
+          padding: 8px 16px;
+          font-size: 13px;
+     }
+}
+
+@media (max-width: 767px) {
+     .header {
+          padding: 10px 0;
+     }
+     
+     .header .logo img {
+          max-height: 35px;
+     }
+     
+     .navigation.navbar-light .navbar-nav .nav-link {
+          padding: 12px 0;
+          border-bottom: 1px solid #ecf0f1;
+          margin: 0;
+          border-radius: 0;
+     }
+     
+     .navigation.navbar-light .navbar-nav .nav-link:last-child {
+          border-bottom: none;
+     }
+     
+     .search-section .btn {
+          width: 35px;
+          height: 35px;
+     }
+     
+     .profile-btn {
+          padding: 6px 12px;
+          font-size: 12px;
+     }
+     
+     .profile-avatar {
+          width: 28px;
+          height: 28px;
+     }
+     
+     .auth-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+     }
+     
+     .auth-buttons .btn {
+          margin: 0 !important;
+          padding: 8px 12px;
+          font-size: 12px;
+     }
+     
+     #searchModal .modal-dialog {
+          margin: 10px;
+     }
+     
+     #searchModal .modal-body {
+          padding: 20px;
+     }
+     
+     #searchModal .form-control {
+          padding: 12px 15px;
+          font-size: 14px;
+     }
+     
+     #searchModal .btn-primary {
+          padding: 12px 25px;
+          font-size: 14px;
+     }
+}
+
+@media (max-width: 575px) {
+     .header {
+          padding: 8px 0;
+     }
+     
+     .header .logo img {
+          max-height: 30px;
+          padding-left: 10px;
+     }
+     
+     .search-section .btn {
+          width: 32px;
+          height: 32px;
+     }
+     
+     .profile-btn {
+          padding: 5px 10px;
+          font-size: 11px;
+     }
+     
+     .profile-avatar {
+          width: 24px;
+          height: 24px;
+     }
+     
+     .auth-buttons .btn {
+          padding: 6px 10px;
+          font-size: 11px;
+     }
+} 
