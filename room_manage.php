@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $_POST['status'];
     $max_guests = $_POST['max_guests'];
     $description = isset($_POST['description']) ? trim($_POST['description']) : '';
+    $replace_images = isset($_POST['replace_images']) ? $_POST['replace_images'] : 'add'; // 'add' hoặc 'replace'
 
     // Validation
     $errors = [];
@@ -95,33 +96,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($room_id) {
-            // Update
+            // Update room info
             $stmt = $pdo->prepare("UPDATE Room SET RoomName=?, RoomNumber=?, RoomTypeID=?, PricePerNight=?, Status=?, MaxGuests=?, Description=? WHERE RoomID=?");
             $stmt->execute([$room_name, $room_number, $room_type, $price, $status, $max_guests, $description, $room_id]);
 
-            // Nếu có upload ảnh mới thì xóa ảnh cũ và thêm ảnh mới
-            if (!empty($_FILES['room_image']['name'][0])) {
-                // 1. Lấy danh sách ảnh cũ
-                $imgs = $pdo->prepare("SELECT ImagePath FROM RoomImage WHERE RoomID=?");
-                $imgs->execute([$room_id]);
-                foreach ($imgs as $img) {
-                    $imgPath = $uploadDir . $img['ImagePath'];
-                    if (file_exists($imgPath)) unlink($imgPath);
+            // Xử lý ảnh khi update
+            if (!empty($imageNames)) {
+                if ($replace_images === 'replace') {
+                    // Thay thế tất cả ảnh cũ bằng ảnh mới
+                    // 1. Lấy danh sách ảnh cũ
+                    $imgs = $pdo->prepare("SELECT ImagePath FROM RoomImage WHERE RoomID=?");
+                    $imgs->execute([$room_id]);
+                    foreach ($imgs as $img) {
+                        $imgPath = $uploadDir . $img['ImagePath'];
+                        if (file_exists($imgPath)) unlink($imgPath);
+                    }
+                    // 2. Xóa bản ghi ảnh cũ trong DB
+                    $pdo->prepare("DELETE FROM RoomImage WHERE RoomID=?")->execute([$room_id]);
+                } else {
+                    // Kiểm tra giới hạn số ảnh (ví dụ: tối đa 10 ảnh)
+                    $currentImagesCount = $pdo->prepare("SELECT COUNT(*) FROM RoomImage WHERE RoomID=?");
+                    $currentImagesCount->execute([$room_id]);
+                    $currentCount = $currentImagesCount->fetchColumn();
+                    
+                    if (($currentCount + count($imageNames)) > 10) {
+                        header("Location: " . $_SERVER['PHP_SELF'] . "?error=" . urlencode("Maximum 10 images allowed per room. Current: $currentCount, Adding: " . count($imageNames)));
+                        exit;
+                    }
                 }
-                // 2. Xóa bản ghi ảnh cũ trong DB
-                $pdo->prepare("DELETE FROM RoomImage WHERE RoomID=?")->execute([$room_id]);
 
-                 // 3. Thêm bản ghi ảnh mới vào DB
+                // 3. Thêm ảnh mới vào DB
                 foreach ($imageNames as $img) {
                     $stmtImg = $pdo->prepare("INSERT INTO RoomImage (ImagePath, RoomID) VALUES (?, ?)");
                     $stmtImg->execute([$img, $room_id]);
-                 }
+                }
             }
             
             header("Location: " . $_SERVER['PHP_SELF'] . "?success=edit");
             exit;
         } else {
-            // Insert
+            // Insert new room
             $stmt = $pdo->prepare("INSERT INTO Room (RoomName, RoomNumber, RoomTypeID, PricePerNight, Status, MaxGuests, Description) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([$room_name, $room_number, $room_type, $price, $status, $max_guests, $description]);
             $room_id = $pdo->lastInsertId();
@@ -182,6 +196,7 @@ if (isset($_GET['delete'])) {
     <title>Room Management</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/imgprev.css">
     <style>
         body {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -301,6 +316,49 @@ if (isset($_GET['delete'])) {
             border-top: none;
             padding-top: 0;
         }
+        
+        /* Styles for existing images */
+        .existing-image-item {
+            position: relative;
+            display: inline-block;
+            margin: 4px;
+        }
+        .existing-image-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #28a745;
+        }
+        .delete-existing-image {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 12px;
+            line-height: 1;
+        }
+        
+        /* Image upload mode selection */
+        .image-upload-mode {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .image-upload-mode label {
+            margin-bottom: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .image-upload-mode input[type="radio"] {
+            margin-right: 8px;
+        }
+        
         @media (max-width: 767px) {
             .container {
                 padding: 18px 4px 12px 4px;
@@ -409,14 +467,19 @@ if (isset($_GET['delete'])) {
                         <?php
                         $imgs = $pdo->prepare("SELECT ImagePath FROM RoomImage WHERE RoomID=?");
                         $imgs->execute([$row['RoomID']]);
+                        $imageCount = 0;
                         foreach ($imgs as $img):
                             $imgPath = 'uploads/' . $img['ImagePath'];
                             if (!file_exists($imgPath) || empty($img['ImagePath'])) {
                                 $imgPath = 'uploads/default.jpg';
                             }
+                            $imageCount++;
                         ?>
                             <img src="<?= htmlspecialchars($imgPath) ?>" width="60" style="margin:2px;">
                         <?php endforeach; ?>
+                        <?php if ($imageCount > 0): ?>
+                            <small class="text-muted d-block"><?= $imageCount ?> image(s)</small>
+                        <?php endif; ?>
                     </td>
                     <td class="actions-column">
                         <button class="btn btn-warning btn-sm" data-toggle="modal"
@@ -444,7 +507,7 @@ if (isset($_GET['delete'])) {
 
 <!-- Modal -->
 <div class="modal fade" id="roomModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <form method="post" enctype="multipart/form-data" class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add / Edit Room</h5>
@@ -492,9 +555,29 @@ if (isset($_GET['delete'])) {
           <label>Description</label>
           <textarea name="description" id="description" class="form-control" rows="2" maxlength="500"></textarea>
         </div>
+        
+        <!-- Image Upload Mode Selection (chỉ hiện khi edit) -->
+        <div class="image-upload-mode" id="imageUploadMode" style="display: none;">
+          <h6><i class="fas fa-images"></i> Image Upload Mode:</h6>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" name="replace_images" value="add" class="form-check-input" checked>
+              <i class="fas fa-plus text-success"></i> Add new images (keep existing images)
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" name="replace_images" value="replace" class="form-check-input">
+              <i class="fas fa-sync-alt text-warning"></i> Replace all images (delete existing images)
+            </label>
+          </div>
+        </div>
+        
         <div class="form-group">
           <label>Room Images</label>
           <input type="file" name="room_image[]" class="form-control-file" id="room_image" multiple accept="image/*">
+          <small class="text-muted">Maximum 10 images per room. Accepted formats: JPG, PNG, GIF, WebP. Max size: 5MB per image.</small>
+          <div id="existingImagesContainer" class="mt-2"></div>
           <div id="imagePreview" class="mt-2" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
         </div>
       </div>
@@ -544,8 +627,11 @@ if (isset($_GET['delete'])) {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 $('#roomModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget)
-    $('#room_id').val(button.data('id') || '');
+    var button = $(event.relatedTarget);
+    var roomId = button.data('id');
+    
+    // Clear previous data
+    $('#room_id').val(roomId || '');
     $('#room_name').val(button.data('name') || '');
     $('#room_number').val(button.data('number') || '');
     $('#room_type').val(button.data('type') || '');
@@ -553,6 +639,19 @@ $('#roomModal').on('show.bs.modal', function (event) {
     $('#max_guests').val(button.data('max-guests') || '2');
     $('#status').val(button.data('status') || 'Available');
     $('#description').val(button.data('description') || '');
+    $('#existingImagesContainer').empty();
+    $('#imagePreview').empty();
+    $('#room_image').val('');
+    
+    // Show/hide image upload mode based on whether we're editing
+    if (roomId) {
+        $('#imageUploadMode').show();
+        $('.modal-title').text('Edit Room');
+        loadExistingImages(roomId);
+    } else {
+        $('#imageUploadMode').hide();
+        $('.modal-title').text('Add New Room');
+    }
 });
 
 // Function to update room status via AJAX
@@ -567,9 +666,7 @@ function updateRoomStatus(roomId, status) {
         dataType: 'json',
         success: function(response) {
             if (response.success) {
-                // Show success message
                 alert('Room status updated successfully!');
-                // Optionally refresh the page to show updated status
                 location.reload();
             } else {
                 alert('Error: ' + response.error);
@@ -587,30 +684,210 @@ function confirmDelete(roomId, roomName) {
     $('#confirmDeleteBtn').attr('href', '?delete=' + roomId);
     $('#deleteRoomModal').modal('show');
 }
-</script>
-<script>
+
+// Load existing images for editing
+function loadExistingImages(roomId) {
+    $.ajax({
+        url: 'get_room_images.php',
+        type: 'GET',
+        data: { room_id: roomId },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success && response.images && response.images.length > 0) {
+                $('#existingImagesContainer').append('<div class="existing-images-label mb-2"><strong><i class="fas fa-images text-primary"></i> Current Images (' + response.images.length + '):</strong></div>');
+                
+                response.images.forEach(function(image) {
+                    const imageContainer = $(`
+                        <div class="existing-image-item" data-image-id="${image.id}" style="position: relative; display: inline-block; margin: 4px;">
+                            <img src="uploads/${image.path}" style="
+                                width: 80px; 
+                                height: 80px; 
+                                object-fit: cover; 
+                                border-radius: 8px; 
+                                border: 2px solid #28a745;
+                            ">
+                            <button type="button" class="btn btn-danger btn-sm delete-existing-image" style="
+                                position: absolute; 
+                                top: -5px; 
+                                right: -5px; 
+                                width: 20px; 
+                                height: 20px; 
+                                border-radius: 50%; 
+                                padding: 0; 
+                                font-size: 12px;
+                                line-height: 1;
+                            ">&times;</button>
+                            <div style="font-size: 10px; text-align: center; margin-top: 2px; color: #28a745;">
+                                Existing
+                            </div>
+                        </div>
+                    `);
+                    $('#existingImagesContainer').append(imageContainer);
+                });
+            }
+        },
+        error: function() {
+            console.log('Error loading existing images');
+        }
+    });
+}
+
+// Delete existing image
+$(document).on('click', '.delete-existing-image', function() {
+    const imageId = $(this).closest('.existing-image-item').data('image-id');
+    const imageElement = $(this).closest('.existing-image-item');
+    
+    if (confirm('Are you sure you want to delete this image?')) {
+        $.ajax({
+            url: 'delete_room_image.php',
+            type: 'POST',
+            data: { image_id: imageId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    imageElement.remove();
+                    
+                    // Update counter
+                    const remainingImages = $('.existing-image-item').length;
+                    if (remainingImages === 0) {
+                        $('.existing-images-label').remove();
+                    } else {
+                        $('.existing-images-label').html('<strong><i class="fas fa-images text-primary"></i> Current Images (' + remainingImages + '):</strong>');
+                    }
+                } else {
+                    alert('Error deleting image: ' + response.error);
+                }
+            },
+            error: function() {
+                alert('Error deleting image');
+            }
+        });
+    }
+});
+
+// Enhanced image preview with delete functionality
 $('#room_image').on('change', function() {
     $('#imagePreview').empty();
     const files = this.files;
-    if (files) {
-        Array.from(files).forEach(file => {
+    if (files && files.length > 0) {
+        $('#imagePreview').append('<div class="new-images-label mb-2"><strong><i class="fas fa-plus text-success"></i> New Images (' + files.length + '):</strong></div>');
+        
+        Array.from(files).forEach((file, index) => {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    $('#imagePreview').append(
-                        $('<img>').attr('src', e.target.result).css({
-                            width: '60px',
-                            height: '60px',
-                            objectFit: 'cover',
-                            borderRadius: '8px',
-                            border: '1.5px solid #eee',
-                            marginRight: '4px'
-                        })
-                    );
+                    const imageContainer = $(`
+                        <div class="image-preview-item" data-index="${index}" style="position: relative; display: inline-block; margin: 4px;">
+                            <img src="${e.target.result}" style="
+                                width: 80px; 
+                                height: 80px; 
+                                object-fit: cover; 
+                                border-radius: 8px; 
+                                border: 2px solid #007bff;
+                            ">
+                            <button type="button" class="btn btn-warning btn-sm remove-image" style="
+                                position: absolute; 
+                                top: -5px; 
+                                right: -5px; 
+                                width: 20px; 
+                                height: 20px; 
+                                border-radius: 50%; 
+                                padding: 0; 
+                                font-size: 12px;
+                                line-height: 1;
+                            ">&times;</button>
+                            <div style="font-size: 10px; text-align: center; margin-top: 2px; color: #007bff;">
+                                ${file.name.substring(0, 12)}${file.name.length > 12 ? '...' : ''}
+                            </div>
+                        </div>
+                    `);
+                    $('#imagePreview').append(imageContainer);
                 };
                 reader.readAsDataURL(file);
             }
         });
     }
 });
+
+// Remove image from preview
+$(document).on('click', '.remove-image', function() {
+    const index = $(this).closest('.image-preview-item').data('index');
+    $(this).closest('.image-preview-item').remove();
+    
+    // Remove file from input
+    const input = document.getElementById('room_image');
+    const dt = new DataTransfer();
+    
+    Array.from(input.files).forEach((file, i) => {
+        if (i !== index) {
+            dt.items.add(file);
+        }
+    });
+    
+    input.files = dt.files;
+    
+    // Update counter
+    const remainingFiles = input.files.length;
+    if (remainingFiles === 0) {
+        $('.new-images-label').remove();
+    } else {
+        $('.new-images-label').html('<strong><i class="fas fa-plus text-success"></i> New Images (' + remainingFiles + '):</strong>');
+    }
+});
+
+// Form validation before submit
+$('#roomModal form').on('submit', function(e) {
+    const fileInput = document.getElementById('room_image');
+    const roomId = $('#room_id').val();
+    const replaceMode = $('input[name="replace_images"]:checked').val();
+    
+    if (fileInput.files.length > 0) {
+        // Validate file types and sizes
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        
+        for (let file of fileInput.files) {
+            if (!allowedTypes.includes(file.type)) {
+                alert(`File ${file.name} is not a valid image type`);
+                e.preventDefault();
+                return false;
+            }
+            
+            if (file.size > maxSize) {
+                alert(`File ${file.name} is too large. Maximum size is 5MB`);
+                e.preventDefault();
+                return false;
+            }
+        }
+        
+        // Check total image limit for existing rooms
+        if (roomId && replaceMode === 'add') {
+            const currentImages = $('.existing-image-item').length;
+            const newImages = fileInput.files.length;
+            const totalImages = currentImages + newImages;
+            
+            if (totalImages > 10) {
+                alert(`Maximum 10 images allowed per room. Current: ${currentImages}, Adding: ${newImages}, Total would be: ${totalImages}`);
+                e.preventDefault();
+                return false;
+            }
+        }
+    }
+});
+
+// Show upload mode info based on selection
+$('input[name="replace_images"]').on('change', function() {
+    const mode = $(this).val();
+    const currentImages = $('.existing-image-item').length;
+    
+    if (mode === 'replace') {
+        if (currentImages > 0) {
+            if (!confirm(`This will delete all ${currentImages} existing image(s) and replace them with new ones. Are you sure?`)) {
+                $('input[name="replace_images"][value="add"]').prop('checked', true);
+            }
+        }
+    }
+});
 </script>
+</body>
+</html>
